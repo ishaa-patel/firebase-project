@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import auth from '@react-native-firebase/auth';
-import SignInGoogle from './app/components/SignInWithGoogle';
-import SignInFacebook from './app/components/SignInWithFacebook';
+import { SignInFacebook, SignInGoogle, PhoneSignIn } from './app/components';
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -33,6 +32,7 @@ export default function App() {
         <Text>Login</Text>
         <SignInGoogle />
         <SignInFacebook />
+        <PhoneSignIn />
       </View>
     );
   }
