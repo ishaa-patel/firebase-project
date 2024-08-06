@@ -2,7 +2,10 @@
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 import auth from '@react-native-firebase/auth';
 import { Button } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+
 export default function SignInFacebook() {
+    const usersCollection = firestore().collection('Users');
     async function onFacebookButtonPress() {
         try {
             // Attempt login with permissions
@@ -23,6 +26,14 @@ export default function SignInFacebook() {
 
             // Create a Firebase credential with the AccessToken
             const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+            const user = (await auth().signInWithCredential(facebookCredential)).user;
+            usersCollection.add({
+                id: user.uid,
+                name: user.displayName,
+                email: user.email,
+                imageUrl: user.photoURL,
+                provider: facebookCredential.providerId,
+            });
 
             // Sign-in the user with the credential
             return auth().signInWithCredential(facebookCredential);
