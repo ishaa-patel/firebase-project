@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { SignInFacebook, SignInGoogle, PhoneSignIn } from './app/components';
 
@@ -40,6 +40,10 @@ export default function App() {
   return (
     <View>
       <Text>Welcome {user.email}</Text>
+      <Button
+        title="Sign Out"
+        onPress={() => auth().signOut().then(() => { 'Signed Out !'; })}
+      />
     </View>
   );
 }
