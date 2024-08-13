@@ -1,5 +1,5 @@
-/* eslint-disable prettier/prettier */
-import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+/* eslint-disable react/react-in-jsx-scope *//* eslint-disable prettier/prettier */
+import { LoginManager, AccessToken, GraphRequest, GraphRequestManager } from 'react-native-fbsdk-next';
 import auth from '@react-native-firebase/auth';
 import { Button } from 'react-native';
 import { isUserExist } from '../utils/SignInWithOAuth';
@@ -8,7 +8,26 @@ const signInWithFacebook = async (data: any) => {
     try {
         // Create a credential with the Facebook access token
         const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-        isUserExist(facebookCredential);
+        const request = new GraphRequest(
+            '/me',
+            {
+                accessToken: data.accessToken.toString(),
+                parameters: {
+                    fields: {
+                        string: 'id,email,first_name,last_name,name,picture',
+                    },
+                },
+            },
+            (err: any, res: any) => {
+                if (err) {
+                    console.log('fetch user error:', JSON.stringify(err));
+                } else {
+                    isUserExist(facebookCredential, res);
+                    console.log('Result:', res);
+                }
+            }
+        );
+        new GraphRequestManager().addRequest(request).start();
     } catch (error: any) {
         // Handle errors
         if (error.code === 'auth/account-exists-with-different-credential') {
