@@ -19,13 +19,13 @@ export default function SignInGoogle() {
 
         // Get the users ID token
         try {
-            const { idToken } = await GoogleSignin.signIn();
+            const { idToken, user } = await GoogleSignin.signIn();
 
             // Create a Google credential with the token
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
             console.log('google-cred:', JSON.stringify(googleCredential));
 
-            isUserExist(googleCredential);
+            isUserExist(googleCredential, user);
 
         } catch (err) {
             console.log('idToken error:', JSON.stringify(err, null, 2));
