@@ -13,7 +13,6 @@ export const isUserExist = async (credential: any, _user: any) => {
         .where('id', '==', _user?.id)
         .get();
     const checkEmail = await usersCollection.where('email', '==', _user?.email).get();
-    console.log(checkEmail.size);
 
     if (userDoc.size === 0) {
         if (checkEmail.size === 0) {
