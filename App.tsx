@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import { Facebook, SignInGoogle, PhoneSignIn, EmailSignIn } from './app/components';
+import AppStack from './app/navigation/AppStack';
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -39,12 +40,6 @@ export default function App() {
   }
 
   return (
-    <View>
-      <Text>Welcome {user.email}</Text>
-      <Button
-        title="Sign Out"
-        onPress={() => auth().signOut().then(() => { 'Signed Out !'; })}
-      />
-    </View>
+    <AppStack />
   );
 }
